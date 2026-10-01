@@ -295,6 +295,11 @@
         </section>
     </main>
 
+    <!-- ملف الصوت المخفي -->
+    <audio id="bg-audio" loop preload="auto">
+        <source src="song.mp3" type="audio/mpeg">
+    </audio>
+
     <!-- مكتبة الجزيئات -->
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 
@@ -321,9 +326,13 @@
         function openInvitation() {
             const splashScreen = document.getElementById('splash-screen');
             const mainContent = document.getElementById('main-content');
+            const audio = document.getElementById('bg-audio');
             
             // رفع الشاشة لأعلى
             splashScreen.style.transform = 'translateY(-100vh)';
+            
+            // تشغيل الموسيقى المخفية
+            audio.play().catch(err => console.log("المتصفح يمنع التشغيل التلقائي", err));
             
             setTimeout(() => {
                 splashScreen.style.display = 'none';
