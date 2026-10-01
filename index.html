@@ -1,6 +1,5 @@
 
 
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -200,9 +199,9 @@
         </section>
     </main>
 
-    <!-- ملف الصوت المخفي - أضفنا خاصية playsinline للموبايل -->
-    <audio id="bg-audio" loop preload="auto" playsinline>
-        <source src="song.mp3" type="audio/mpeg">
+    <!-- ملف الصوت المخفي برابط خارجي مباشر -->
+    <audio id="bg-audio" loop preload="auto" playsinline crossorigin="anonymous">
+        <source src="https://ia800504.us.archive.org/33/items/canon-in-d_202208/Canon%20in%20D.mp3" type="audio/mpeg">
     </audio>
 
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
@@ -216,19 +215,26 @@
             });
         }
 
-        // الدالة المحدثة لتشغيل الصوت الإجباري
         function openInvitation() {
             const splashScreen = document.getElementById('splash-screen');
             const mainContent = document.getElementById('main-content');
             const audio = document.getElementById('bg-audio');
             
-            // أمر إجباري لتشغيل الصوت فوراً عند الضغط
+            // تحضير الصوت وتشغيله
+            audio.load();
             audio.volume = 1.0;
             let playPromise = audio.play();
             
+            // الفخ البرمجي: إذا رفض المتصفح التشغيل، نجبره عند أول لمسة للشاشة
             if (playPromise !== undefined) {
                 playPromise.catch(error => {
-                    console.log("المتصفح منع التشغيل التلقائي", error);
+                    console.log("تم حظر الصوت، سيتم تشغيله عند لمس الشاشة.", error);
+                    document.body.addEventListener('touchstart', function() {
+                        audio.play();
+                    }, { once: true });
+                    document.body.addEventListener('click', function() {
+                        audio.play();
+                    }, { once: true });
                 });
             }
 
